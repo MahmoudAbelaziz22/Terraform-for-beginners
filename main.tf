@@ -1,14 +1,23 @@
-
-resource "aws_s3_bucket" "finance" {
-  bucket = "finance-54331666"
-  tags = {
-    Description="finance and payroll"
+resource "aws_dynamodb_table" "cars" {
+  name = "cars"
+  hash_key = "VIN"
+  billing_mode = "PAY_PER_REQUEST"
+  attribute {
+    name = "VIN"
+    type = "S"
   }
 }
 
-resource "aws_s3_bucket_object" "finance-object" {
-  content = "/home/oday/Desktop/terraform-for-beginners/admin-policy.json"
-  key = "admin-policy.json"
-  bucket = aws_s3_bucket.finance.id
+resource "aws_dynamodb_table_item" "item" {
+  table_name = aws_dynamodb_table.cars.name
+  hash_key = aws_dynamodb_table.cars.hash_key
+  
+  item = <<EOT
+{
+           "Manufacturer": {"S":"Toyota"},
+           "Make": {"S":"Corolla"},
+           "Year": {"N":"2004"},
+           "VIN" : {"S":"4Y1SL65848Z411439"}
 }
-
+EOT
+}
