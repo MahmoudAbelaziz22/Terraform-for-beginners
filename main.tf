@@ -1,21 +1,14 @@
-resource "aws_iam_user" "admin-user" {
-  name = "lucy"
+
+resource "aws_s3_bucket" "finance" {
+  bucket = "finance-54331666"
   tags = {
-    tag-key = "Technical team leader"
+    Description="finance and payroll"
   }
 }
 
-resource "aws_iam_policy" "adminUser" {
-  name        = "adminUser"
-  policy = file("admin-policy.json")
+resource "aws_s3_bucket_object" "finance-object" {
+  content = "/home/oday/Desktop/terraform-for-beginners/admin-policy.json"
+  key = "admin-policy.json"
+  bucket = aws_s3_bucket.finance.id
 }
-
-resource "aws_iam_policy_attachment" "test-attach" {
-  name = "test"
-  users      = [aws_iam_user.admin-user.name]
-  policy_arn = aws_iam_policy.adminUser.arn
-}
-
-
-
 
